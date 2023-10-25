@@ -22,7 +22,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "software_timer.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -94,29 +94,8 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  int led_status = 1;
-  setTimer(50);
   while (1)
   {
-	  if (timer_flag == 1)
-	  {
-		  switch(led_status)
-		  {
-		  	  case 1:
-		  		  display7SEG(1);
-		  		  HAL_GPIO_WritePin(GPIOA, EN0_Pin, RESET);
-		  		  HAL_GPIO_WritePin(GPIOA, EN1_Pin, SET);
-		  		  led_status = 2;
-		  		  break;
-		  	  case 2:
-				  display7SEG(2);
-				  HAL_GPIO_WritePin(GPIOA, EN1_Pin, RESET);
-				  HAL_GPIO_WritePin(GPIOA, EN0_Pin, SET);
-				  led_status = 1;
-				  break;
-		  }
-		  setTimer(50);
-	  }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -243,14 +222,44 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-int counter = 100;
+//int counter = 100;
+//void HAL_TIM_PeriodElapsedCallback ( TIM_HandleTypeDef * htim )
+//{
+//	timerRun();
+//	counter--;
+//	if( counter <= 0) {
+//		counter = 100;
+//		HAL_GPIO_TogglePin ( LED_RED_GPIO_Port , LED_RED_Pin ) ;
+//	}
+//}
+int counter = 50;
+int led_status = 1;
 void HAL_TIM_PeriodElapsedCallback ( TIM_HandleTypeDef * htim )
 {
-	timerRun();
-	counter--;
-	if( counter <= 0) {
-		counter = 100;
-		HAL_GPIO_TogglePin ( LED_RED_GPIO_Port , LED_RED_Pin ) ;
+	if (counter > 0)
+	{
+		counter--;
+		if (counter <= 0)
+		{
+			counter = 50;
+			switch(led_status)
+			{
+			case 1:
+			  display7SEG(1);
+			  HAL_GPIO_WritePin(GPIOA, EN0_Pin, RESET);
+			  HAL_GPIO_WritePin(GPIOA, EN1_Pin, SET);
+			  led_status = 2;
+			  break;
+			case 2:
+			  display7SEG(2);
+			  HAL_GPIO_WritePin(GPIOA, EN1_Pin, RESET);
+			  HAL_GPIO_WritePin(GPIOA, EN0_Pin, SET);
+			  led_status = 1;
+			  break;
+			default:
+				break;
+			}
+		}
 	}
 }
 void display7SEG(int counter){
