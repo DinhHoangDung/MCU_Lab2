@@ -153,6 +153,7 @@ int main(void)
 	  if (timer_flag[2] == 1)
 	  {
 		  HAL_GPIO_TogglePin(GPIOA, DOT_Pin);
+		  setTimer(100, 2);
 	  }
     /* USER CODE END WHILE */
 
