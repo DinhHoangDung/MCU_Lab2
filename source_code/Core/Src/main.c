@@ -223,14 +223,14 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE BEGIN 4 */
 int enable_trigger = 0;
-int counter = 50;
+int counter = 100;
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
 	counter--;
 	int num = 0;
 	if (counter <= 0)
 	{
-		counter = 50;
+		counter = 100;
 		HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
 		switch(enable_trigger)
 		{
@@ -243,7 +243,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 			case 1:
 				HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, SET);
 				HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, RESET);
-				enable_trigger = 1;
+				enable_trigger = 0;
 				num = 2;
 				break;
 			default:
